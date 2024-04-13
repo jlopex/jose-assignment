@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 
-from schemas.new_device import NewDeviceSchema
-from repository import model
-from domain.device import Device
+from src.schemas.new_device import NewDeviceSchema
+from src.repository import model
+from src.domain.device import Device
 
 
 def create(db: Session, new_device: NewDeviceSchema) -> Device:

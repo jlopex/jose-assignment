@@ -4,7 +4,7 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-import config
+from src import config
 from .model._base import Base  # noqa
 
 

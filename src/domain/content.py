@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from domain.protection_system import ProtectionSystem
+from src.domain.protection_system import ProtectionSystem
 
 
 class ContentBase(BaseModel):
