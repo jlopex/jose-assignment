@@ -3,8 +3,11 @@ from pydantic import BaseModel
 from domain.protection_system import ProtectionSystem
 
 
-class Content(BaseModel):
-    id_: int
+class ContentBase(BaseModel):
     protection_system: ProtectionSystem
     encryption_key: str
     encryption_payload: bytes
+
+
+class Content(ContentBase):
+    id: int

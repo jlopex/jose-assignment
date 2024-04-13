@@ -3,8 +3,10 @@ from pydantic import BaseModel
 from domain.protection_system import ProtectionSystem
 
 
-class Device(BaseModel):
-    id_: int
+class DeviceBase(BaseModel):
     name: str
     protection_system: ProtectionSystem
 
+
+class Device(DeviceBase):
+    id: int
