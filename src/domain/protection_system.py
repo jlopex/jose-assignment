@@ -8,3 +8,6 @@ class ProtectionSystemBase(BaseModel):
 
 class ProtectionSystem(ProtectionSystemBase):
     id: int
+
+    class Config:
+        from_attributes = True

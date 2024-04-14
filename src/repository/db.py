@@ -2,6 +2,7 @@
 from contextlib import contextmanager
 from typing import TypeVar, Generator, Type
 
+from pydantic import BaseModel
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -9,7 +10,7 @@ from src import config
 from .model._base import Base  # noqa
 
 _T = TypeVar("_T")
-_Q = TypeVar("_Q", bound=Base)
+_Q = TypeVar("_Q", bound=BaseModel)
 
 db: Engine
 session_maker: sessionmaker
