@@ -6,7 +6,7 @@ from tests.integration.common import DBTestBase
 
 
 class TestDb(DBTestBase):
-    def test_select_one(self):
+    def setup_method(self):
         with new_session() as session:
             result = session.execute(text('select 1'))
 

@@ -1,6 +1,6 @@
 # For simplicity's sake, we don´t do migrations
 from contextlib import contextmanager
-from typing import TypeVar, Generator
+from typing import TypeVar, Generator, Type
 
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, Session
@@ -9,6 +9,7 @@ from src import config
 from .model._base import Base  # noqa
 
 _T = TypeVar("_T")
+_Q = TypeVar("_Q", bound=Base)
 
 db: Engine
 session_maker: sessionmaker
@@ -32,10 +33,10 @@ def new_session() -> Generator[Session, None, None]:
         session.close()
 
 
-def generic_create(model_instance: _T) -> _T:
+def generic_create(model_instance: _T, domain_class: Type[_Q]) -> _Q:
     with new_session() as session:
         session.add(model_instance)
         session.commit()
         session.refresh(model_instance)
 
-        return model_instance
+        return domain_class.from_orm(model_instance)
