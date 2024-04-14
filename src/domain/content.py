@@ -4,10 +4,18 @@ from src.domain.protection_system import ProtectionSystem
 
 
 class ContentBase(BaseModel):
-    protection_system: ProtectionSystem
     encryption_key: str
-    encryption_payload: bytes
+    encrypted_payload: bytes
+    is_encrypted: bool = False
+
+
+class ContentCreate(ContentBase):
+    protection_system_id: int
 
 
 class Content(ContentBase):
     id: int
+    protection_system: ProtectionSystem
+
+    class Config:
+        from_attributes = True
