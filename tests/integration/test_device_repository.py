@@ -1,4 +1,4 @@
-from src.domain.device import DeviceBase
+from src.domain.device import DeviceBase, DeviceCreate
 from src.domain.protection_system import ProtectionSystemBase
 from src.repository.device import DeviceRepository
 from src.repository.protection_system import ProtectionSystemRepository
@@ -16,7 +16,9 @@ class TestDeviceRepository(DBTestBase):
     ) -> DeviceBase:
         if protection_system is None:
             protection_system = TestDeviceRepository._create_protection_system_fixture()
-        device_create = DeviceBase(name=name, protection_system=protection_system)
+        device_create = DeviceCreate(
+            name=name, protection_system_id=protection_system.id
+        )
         return DeviceRepository.create(device_create)
 
     @staticmethod
