@@ -1,10 +1,16 @@
 from abc import ABC, abstractmethod
 
+from src import config
+
 
 class BaseCryptoDriver(ABC):
     """Implements the Crypto Driver interface.
     NOTE: Crypto Drivers implemented here are for illustrative purposes. DO NOT USE in real projects!
     """
+
+    @staticmethod
+    def global_key() -> bytes:
+        return config.CRYPTO_KEY
 
     @staticmethod
     def hash(item: bytes) -> int:
