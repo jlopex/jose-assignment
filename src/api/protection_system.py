@@ -5,7 +5,9 @@ from ._base import app, BASE_ROUTE
 from .responses.protection_system import ProtectionSystemResponse
 from .schemas.protection_system_create import ProtectionSystemCreateSchema
 
-ROUTE = f"{BASE_ROUTE}/protection-system"
+ROUTE = (
+    f"{BASE_ROUTE}/protection-systems"  # Unused for the moment (need to create a Route)
+)
 
 
 @app.get("/api/protection-systems/{id}", response_model=ProtectionSystemResponse)
