@@ -16,11 +16,11 @@ db: Engine
 session_maker: sessionmaker
 
 
-def init(db_url: str = config.DB_NAME) -> None:
+def init(db_url: str = config.DB_NAME, *, debug: bool = config.DB_ECHO) -> None:
     global db, session_maker
 
     db = create_engine(db_url, connect_args={"check_same_thread": False})
-    db.echo = config.DB_ECHO
+    db.echo = debug
     Base.metadata.create_all(db)  # to be replaced by alembic migrations
     session_maker = sessionmaker(bind=db, autoflush=False, autocommit=False)
 
