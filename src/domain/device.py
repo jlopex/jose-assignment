@@ -10,3 +10,6 @@ class DeviceBase(BaseModel):
 
 class Device(DeviceBase):
     id: int
+
+    class Config:
+        from_attributes = True

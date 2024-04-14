@@ -1,14 +1,14 @@
-from sqlalchemy.orm import Session
-
-from src.schemas.new_device import NewDeviceSchema
+from src.domain.device import Device, DeviceBase
 from src.repository import model
-from src.domain.device import Device
+from src.repository.db import generic_create
+
+__all__ = ("DeviceRepository",)
 
 
-def create(db: Session, new_device: NewDeviceSchema) -> Device:
-    db_device = model.Device(name=new_device.name, protection_system_id=new_device.protection_system_id)
-    db.add(db_device)
-    db.commit()
-    db.refresh(db_device)
-
-    return Device.from_orm(db_device)
+class DeviceRepository:
+    @staticmethod
+    def create(new_device: DeviceBase) -> Device:
+        db_device = model.Device(
+            name=new_device.name, protection_system_id=new_device.protection_system.id
+        )
+        return generic_create(db_device, Device)
