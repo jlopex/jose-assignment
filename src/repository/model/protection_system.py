@@ -10,4 +10,3 @@ class ProtectionSystem(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(32))
     encryption_mode: Mapped[str] = mapped_column(String(64))
-
