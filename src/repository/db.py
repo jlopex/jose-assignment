@@ -41,3 +41,8 @@ def generic_create(model_instance: _T, domain_class: Type[_Q]) -> _Q:
         session.refresh(model_instance)
 
         return domain_class.from_orm(model_instance)
+
+
+def generic_get(id: int, model_instance: _T, domain_class: Type[_Q]) -> _Q:
+    with new_session() as session:
+        return domain_class.from_orm(session.get(model_instance, id))

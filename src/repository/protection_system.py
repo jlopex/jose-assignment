@@ -1,6 +1,6 @@
 from src.domain.protection_system import ProtectionSystemBase, ProtectionSystem
-from src.repository.db import generic_create
 from src.repository import model
+from src.repository.db import generic_create, generic_get
 
 __all__ = ("ProtectionSystemRepository",)
 
@@ -11,3 +11,7 @@ class ProtectionSystemRepository:
         protection_system = model.ProtectionSystem(**new_protection_system.model_dump())
 
         return generic_create(protection_system, ProtectionSystem)
+
+    @staticmethod
+    def get(id: int) -> ProtectionSystem:
+        return generic_get(id, model.ProtectionSystem, ProtectionSystem)

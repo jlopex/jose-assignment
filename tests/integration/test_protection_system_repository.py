@@ -1,6 +1,6 @@
 from src.domain.protection_system import ProtectionSystemBase
-from tests.integration.common import DBTestBase
 from src.repository.protection_system import ProtectionSystemRepository
+from tests.integration.common import DBTestBase
 
 
 class TestProtectionSystemRepository(DBTestBase):
@@ -15,3 +15,13 @@ class TestProtectionSystemRepository(DBTestBase):
             "id": 1,
             **new_protection_system.model_dump(),
         } == protection_system.model_dump()
+
+    def test_get_by_id(self):
+        new_protection_system = ProtectionSystemBase(
+            name="test_protection_system",
+            encryption_mode="test_protection_system",
+        )
+        protection_system = ProtectionSystemRepository.create(new_protection_system)
+        protection_system_get = ProtectionSystemRepository.get(protection_system.id)
+
+        assert protection_system_get == protection_system
