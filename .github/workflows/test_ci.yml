@@ -31,3 +31,6 @@ jobs:
 
     - name: Install dev dependencies
       run: make install-dev
+
+    - name: Run tests
+      run: make test
