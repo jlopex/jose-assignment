@@ -1,5 +1,5 @@
 test:
-	pytest tests
+	pytest tests --disable-warnings
 
 install:
 	pip install -Ur requirements.txt
