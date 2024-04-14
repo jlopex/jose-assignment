@@ -9,19 +9,39 @@ from tests.integration.common import DBTestBase
 class TestDeviceRepository(DBTestBase):
     """CRUD Tests for DeviceRepository class"""
 
-    def test_create(self):
+    @staticmethod
+    def _create_device_fixture(
+        name="test device",
+        protection_system: ProtectionSystemBase | None = None,
+    ) -> DeviceBase:
+        if protection_system is None:
+            protection_system = TestDeviceRepository._create_protection_system_fixture()
+        device_create = DeviceBase(name=name, protection_system=protection_system)
+        return DeviceRepository.create(device_create)
+
+    @staticmethod
+    def _create_protection_system_fixture(
+        name="test protection system", encryption_mode="test encryption_mode"
+    ) -> ProtectionSystemBase:
         new_protection_system = ProtectionSystemBase(
-            name="test_protection_system",
-            encryption_mode="test_protection_system",
+            name=name,
+            encryption_mode=encryption_mode,
         )
-        protection_system = ProtectionSystemRepository.create(new_protection_system)
-        device_create = DeviceBase(
+        return ProtectionSystemRepository.create(new_protection_system)
+
+    def test_create(self):
+        protection_system = self._create_protection_system_fixture()
+        device = self._create_device_fixture(
             name="test device", protection_system=protection_system
         )
-        device = DeviceRepository.create(device_create)
 
         assert (
             device.id == 1
         )  # should be 1 because the DB is reset everytime. Otherwise remove (flakyness)
         assert device.protection_system == protection_system
         assert device.name == "test device"
+
+    def test_get(self):
+        device = self._create_device_fixture()
+        read_device = DeviceRepository.get(device.id)
+        assert read_device == device
