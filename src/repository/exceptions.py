@@ -7,3 +7,8 @@ class RepositoryException(UnicornException):
 
 class RepositoryNotFoundError(RepositoryException):
     pass
+
+
+class RepositoryUnencryptedContentError(RepositoryException):
+    """ Content MUST be encrypted before being stored.
+    """
