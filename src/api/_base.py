@@ -28,6 +28,11 @@ async def unicorn_exception_handler(request: Request, exc: UnicornException):
             status_code=status.HTTP_404_NOT_FOUND, content={"message": str(exc)}
         )
 
+    if exc.__class__.__name__ == "SecurityInvalidProtection":
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED, content={"message": str(exc)}
+        )
+
     # unhandled error
     return JSONResponse(
         status_code=500,
