@@ -7,7 +7,6 @@ from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, Session
 
 from src import config
-from .exceptions import RepositoryNotFoundError
 from .model._base import Base  # noqa
 
 _T = TypeVar("_T")
@@ -45,6 +44,8 @@ def generic_create(model_instance: _T, domain_class: Type[_Q]) -> _Q:
 
 
 def generic_get(id: int, model_instance: _T, domain_class: Type[_Q]) -> _Q:
+    from .exceptions import RepositoryNotFoundError
+
     with new_session() as session:
         model = session.get(model_instance, id)
         if model is None:
