@@ -1,6 +1,7 @@
 from src.domain.content import Content, ContentCreate
 from src.domain.protection_system import ProtectionSystem
 from src.repository.content import ContentRepository
+from src.service.crypto import CryptoService
 from tests.factory.protection_system import ProtectionSystemFactory
 
 
@@ -20,11 +21,11 @@ class ContentFactory:
 
         assert (
             protection_system.id == protection_system_id
-        ), "Invalid Fixture initalization"
+        ), "Invalid Fixture initialization"
         content_create = ContentCreate(
             encryption_key=encryption_key,
             encrypted_payload=encrypted_payload,
             protection_system_id=protection_system.id,
-            is_encrypted=True,
         )
-        return ContentRepository.create(content_create)
+        encrypted_content = CryptoService.encrypt(content_create)
+        return ContentRepository.create(encrypted_content)
