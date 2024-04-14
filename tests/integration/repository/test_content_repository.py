@@ -2,7 +2,7 @@ from src.domain.content import Content, ContentCreate
 from src.domain.protection_system import ProtectionSystemBase
 from src.repository.content import ContentRepository
 from src.repository.protection_system import ProtectionSystemRepository
-from tests.integration.common import DBTestBase
+from tests.integration.repository.common import DBTestBase
 
 
 class TestContentRepository(DBTestBase):
@@ -21,6 +21,7 @@ class TestContentRepository(DBTestBase):
             encryption_key=self._ENCRYPTION_KEY,
             encrypted_payload=self._BLOB_FIXTURE,
             protection_system_id=protection_system.id,
+            is_encrypted=True,
         )
         return ContentRepository.create(content_create)
 
@@ -40,7 +41,7 @@ class TestContentRepository(DBTestBase):
 
         assert (
             content.id == 1
-        )  # should be 1 because the DB is reset everytime. Otherwise remove (flakyness)
+        )  # should be 1 because the DB is reset everytime. Otherwise, remove (flakyness)
         assert content.protection_system == protection_system
         assert content.encryption_key == self._ENCRYPTION_KEY
         assert content.encrypted_payload == self._BLOB_FIXTURE

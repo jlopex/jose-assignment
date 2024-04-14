@@ -2,7 +2,7 @@
 from sqlalchemy import text
 
 from src.repository.db import new_session
-from tests.integration.common import DBTestBase
+from tests.integration.repository.common import DBTestBase
 
 
 class TestDb(DBTestBase):

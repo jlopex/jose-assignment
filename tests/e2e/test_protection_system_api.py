@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from src.api import app
 from src.domain.protection_system import ProtectionSystemBase
 from src.repository.protection_system import ProtectionSystemRepository
-from tests.integration.common import DBTestBase
+from tests.integration.repository.common import DBTestBase
 
 
 class TestProtectionSystemApi(DBTestBase):

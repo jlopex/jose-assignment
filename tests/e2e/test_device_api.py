@@ -7,7 +7,7 @@ from src.domain.device import DeviceCreate
 from src.domain.protection_system import ProtectionSystemBase
 from src.repository.device import DeviceRepository
 from src.repository.protection_system import ProtectionSystemRepository
-from tests.integration.common import DBTestBase
+from tests.integration.repository.common import DBTestBase
 
 
 class TestDeviceApi(DBTestBase):
