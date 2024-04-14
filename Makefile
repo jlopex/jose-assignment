@@ -8,4 +8,4 @@ install-dev: install
 	pip install -Ur requirements-dev.txt
 
 run:
-	uvicorn api:app --reload
+	uvicorn src.main:app --reload
