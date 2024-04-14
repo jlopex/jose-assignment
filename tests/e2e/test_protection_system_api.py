@@ -4,13 +4,12 @@ from fastapi.testclient import TestClient
 
 from src.api import app
 from src.domain.protection_system import ProtectionSystemBase
-from src.repository import db  # noqa
 from src.repository.protection_system import ProtectionSystemRepository
 from tests.integration.common import DBTestBase
 
 
 class TestProtectionSystemApi(DBTestBase):
-    """Test protection system API"""
+    """Test Protection System API"""
 
     def setup_class(self):
         self.client = TestClient(app)
