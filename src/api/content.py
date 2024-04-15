@@ -12,10 +12,10 @@ from ._base import app, BASE_ROUTE
 from .responses.content import ContentCreateResponse, ContentResponse
 from .schemas.content_create import ContentCreateSchema
 
-ROUTE = f"{BASE_ROUTE}/content"
+ROUTE = f"{BASE_ROUTE}/contents"
 
 
-@app.get("/api/content/{id}", response_model=ContentResponse)
+@app.get("/api/contents/{id}", response_model=ContentResponse)
 async def get_content(id: int, device_id: int):
     content = ContentRepository.get(id)
     SecurityService.check_can_decrypt(device_id=device_id, content_id=id)
@@ -29,7 +29,7 @@ async def get_content(id: int, device_id: int):
 
 
 @app.post(
-    "/api/content/",
+    "/api/contents/",
     status_code=HTTPStatus.CREATED,
     response_model=ContentCreateResponse,
 )
@@ -63,7 +63,7 @@ async def add_content(new_content: ContentCreateSchema):
 
 
 @app.delete(
-    "/api/content/{id}",
+    "/api/contents/{id}",
     status_code=HTTPStatus.ACCEPTED,
 )
 async def delete_content(id: int):

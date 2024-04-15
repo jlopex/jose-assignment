@@ -25,7 +25,7 @@ class TestContentApi(DBTestBase):
             encrypted_payload=payload, protection_system=device.protection_system
         )
         response = self.client.get(
-            f"/api/content/{content.id}", params={"device_id": 1}
+            f"/api/contents/{content.id}", params={"device_id": 1}
         )
 
         assert response.status_code == 200
@@ -36,13 +36,13 @@ class TestContentApi(DBTestBase):
         }
 
     def test_get_content_not_found(self):
-        response = self.client.get("/api/content/1", params={"device_id": 1})
+        response = self.client.get("/api/contents/1", params={"device_id": 1})
         assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_create_content(self):
         protection_system = ProtectionSystemFactory.new()
         response = self.client.post(
-            f"/api/content/",
+            f"/api/contents/",
             json={
                 "protectionSystem": protection_system.name,
                 "payload": "test payload",
@@ -55,7 +55,7 @@ class TestContentApi(DBTestBase):
 
     def test_delete_content(self):
         content = ContentFactory.new()
-        response = self.client.delete(f"/api/content/{content.id}")
+        response = self.client.delete(f"/api/contents/{content.id}")
 
         assert response.status_code == HTTPStatus.ACCEPTED
         with pytest.raises(RepositoryNotFoundError):
