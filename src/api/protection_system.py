@@ -15,7 +15,11 @@ async def get_protection_system(id: int):
     return ProtectionSystemResponse.from_entity(ProtectionSystemRepository.get(id))
 
 
-@app.post("/api/protection-systems/", status_code=HTTPStatus.CREATED)
+@app.post(
+    "/api/protection-systems/",
+    status_code=HTTPStatus.CREATED,
+    response_model=ProtectionSystemResponse,
+)
 async def create_protection_system(protection_system: ProtectionSystemCreateSchema):
     return ProtectionSystemResponse.from_entity(
         ProtectionSystemRepository.create(protection_system)

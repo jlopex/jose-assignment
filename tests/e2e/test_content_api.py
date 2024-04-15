@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from io import BytesIO
 
 from fastapi.testclient import TestClient
 
@@ -27,19 +26,26 @@ class TestContentApi(DBTestBase):
         )
 
         assert response.status_code == 200
-        assert response.content == payload
+        assert response.json() == {
+            "payload": "fake payload",
+            "protectionSystem": "fake protection system",
+            "symmetricKey": "dummy key",
+        }
 
     def test_get_content_not_found(self):
         response = self.client.get("/api/content/1", params={"device_id": 1})
         assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_create_content(self):
-        file = BytesIO(b"Hello world")
         protection_system = ProtectionSystemFactory.new()
         response = self.client.post(
-            f"/api/content/{protection_system.id}/upload/FAKE_KEY",
-            files={"file": ("test_image.png", file, "image/jpeg")},
+            f"/api/content/",
+            json={
+                "protectionSystem": protection_system.name,
+                "payload": "test payload",
+                "symmetricKey": "123",
+            },
         )
 
         assert response.status_code == HTTPStatus.CREATED
-        assert response.json() == {"filename": "test_image.png", "id": 1, "size": 11}
+        assert response.json() == {"message": "encrypted", "id": 1, "size": 12}

@@ -54,3 +54,9 @@ def generic_get(id: int, model_instance: _T, domain_class: Type[_Q]) -> _Q:
             raise RepositoryNotFoundError(f"Model {model_instance}[{id}] not found")
 
         return domain_class.from_orm(model)
+
+
+def generic_list(model_instance: _T, domain_class: Type[_Q], **kwargs) -> list[_Q]:
+    with new_session() as session:
+        models = session.query(model_instance).filter_by(**kwargs).all()
+        return [domain_class.from_orm(model) for model in models]
