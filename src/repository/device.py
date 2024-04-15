@@ -1,6 +1,6 @@
 from src.domain.device import Device, DeviceCreate
 from src.repository import model
-from src.repository.db import generic_create, generic_get
+from src.repository.db import generic_create, generic_get, generic_list
 
 __all__ = ("DeviceRepository",)
 
@@ -16,3 +16,7 @@ class DeviceRepository:
     @staticmethod
     def get(id: int) -> Device:
         return generic_get(id, model.Device, Device)
+
+    @staticmethod
+    def find(**kwargs) -> list[Device]:
+        return generic_list(model.Device, Device, **kwargs)

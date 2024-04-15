@@ -13,6 +13,15 @@ async def get_device_system(id: int):
     return DeviceResponse.from_entity(DeviceRepository.get(id))
 
 
+@app.get("/api/devices/", response_model=list[DeviceResponse])
+async def list_device_systems(name: str | None = None):
+    filter = {}
+    if name:
+        filter["name"] = name
+
+    return [DeviceResponse.from_entity(d) for d in DeviceRepository.find(**filter)]
+
+
 @app.post(
     "/api/devices/", status_code=HTTPStatus.CREATED, response_model=DeviceResponse
 )

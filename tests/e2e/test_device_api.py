@@ -40,3 +40,23 @@ class TestDeviceApi(DBTestBase):
 
         device = DeviceRepository.get(id=response.json()["id"])
         assert response.json() == device.model_dump()
+
+    def test_list_all_devices(self):
+        devices = [
+            DeviceFactory.new(name="DEV1"),
+            DeviceFactory.new(name="DEV2"),
+        ]
+
+        response = self.client.get("/api/devices/")
+        assert response.json() == [
+            ps.model_dump() for ps in devices
+        ]  # potential flakiness
+
+    def test_filter_devices_by_name(self):
+        devices = [
+            DeviceFactory.new(name="DEV1"),
+            DeviceFactory.new(name="DEV2"),
+        ]
+
+        response = self.client.get("/api/devices/", params={"name": "DEV1"})
+        assert response.json() == [devices[0].model_dump()]
