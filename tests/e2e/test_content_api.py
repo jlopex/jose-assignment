@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from src.api import app
 from src.repository.content import ContentRepository
 from src.repository.exceptions import RepositoryNotFoundError
+from src.service.crypto import CryptoService
 from tests.factory.content import ContentFactory
 from tests.factory.device import DeviceFactory
 from tests.factory.protection_system import ProtectionSystemFactory
@@ -60,3 +61,22 @@ class TestContentApi(DBTestBase):
         assert response.status_code == HTTPStatus.ACCEPTED
         with pytest.raises(RepositoryNotFoundError):
             ContentRepository.get(content.id)
+
+    def test_update_content(self):
+        content = ContentFactory.new()
+        response = self.client.put(
+            f"/api/contents/{content.id}",
+            json={
+                "protectionSystem": content.protection_system.name,
+                "payload": "NEW TEST PAYLOAD",
+                "symmetricKey": "123",
+            },
+        )
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.json() == {"id": 1, "message": "encrypted", "size": 16}
+
+        updated_content = ContentRepository.get(content.id)
+        decrypted_content = CryptoService.decrypt(updated_content)
+
+        assert decrypted_content.encrypted_payload == b"NEW TEST PAYLOAD"

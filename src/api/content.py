@@ -3,7 +3,7 @@ from http import HTTPStatus
 from starlette import status
 from starlette.responses import JSONResponse
 
-from src.domain.content import ContentCreate
+from src.domain.content import ContentCreate, Content
 from src.repository.content import ContentRepository
 from src.repository.protection_system import ProtectionSystemRepository
 from src.service.crypto import CryptoService
@@ -69,3 +69,39 @@ async def add_content(new_content: ContentCreateSchema):
 async def delete_content(id: int):
     ContentRepository.delete(id)
     return {}
+
+
+@app.put(
+    "/api/contents/{id}",
+    status_code=HTTPStatus.OK,
+    response_model=ContentCreateResponse,
+)
+async def update_content(id: int, updated_content: ContentCreateSchema):
+    ContentRepository.get(id)
+    protection_systems = ProtectionSystemRepository.find(
+        name=updated_content.protectionSystem
+    )
+    if not protection_systems:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={
+                "message": f"Protection System [{updated_content.protectionSystem}] not found"
+            },
+        )
+
+    # If different protection systems cannot have the same name, consider using UNIQUE constraint.
+    protection_system = protection_systems[0]
+    crypted_content = CryptoService.encrypt(
+        Content(
+            id=id,
+            protection_system=protection_system,
+            encryption_key=updated_content.symmetricKey,
+            encrypted_payload=updated_content.payload,
+        )
+    )
+    ContentRepository.update(crypted_content)
+
+    return {
+        "id": id,
+        "size": len(crypted_content.encrypted_payload),
+    }

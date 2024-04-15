@@ -66,3 +66,11 @@ def generic_delete(model_instance: _T, **kwargs):
     with new_session() as session:
         session.query(model_instance).filter_by(**kwargs).delete()
         session.commit()
+
+
+def generic_update(id: int, model_instance: _T, **kwargs) -> int:
+    with new_session() as session:
+        result = session.query(model_instance).filter_by(id=id).update(kwargs)
+        session.commit()
+
+        return result
