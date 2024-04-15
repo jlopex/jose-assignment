@@ -60,3 +60,12 @@ async def add_content(new_content: ContentCreateSchema):
         "id": content.id,
         "size": len(crypted_content.encrypted_payload),
     }
+
+
+@app.delete(
+    "/api/content/{id}",
+    status_code=HTTPStatus.ACCEPTED,
+)
+async def delete_content(id: int):
+    ContentRepository.delete(id)
+    return {}

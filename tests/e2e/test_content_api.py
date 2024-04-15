@@ -1,8 +1,11 @@
 from http import HTTPStatus
 
+import pytest
 from fastapi.testclient import TestClient
 
 from src.api import app
+from src.repository.content import ContentRepository
+from src.repository.exceptions import RepositoryNotFoundError
 from tests.factory.content import ContentFactory
 from tests.factory.device import DeviceFactory
 from tests.factory.protection_system import ProtectionSystemFactory
@@ -49,3 +52,11 @@ class TestContentApi(DBTestBase):
 
         assert response.status_code == HTTPStatus.CREATED
         assert response.json() == {"message": "encrypted", "id": 1, "size": 12}
+
+    def test_delete_content(self):
+        content = ContentFactory.new()
+        response = self.client.delete(f"/api/content/{content.id}")
+
+        assert response.status_code == HTTPStatus.ACCEPTED
+        with pytest.raises(RepositoryNotFoundError):
+            ContentRepository.get(content.id)

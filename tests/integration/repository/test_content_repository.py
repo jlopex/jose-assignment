@@ -1,6 +1,9 @@
+import pytest
+
 from src.domain.content import Content, ContentCreate
 from src.domain.protection_system import ProtectionSystemBase
 from src.repository.content import ContentRepository
+from src.repository.exceptions import RepositoryNotFoundError
 from src.repository.protection_system import ProtectionSystemRepository
 from tests.integration.repository.common import DBTestBase
 
@@ -50,3 +53,9 @@ class TestContentRepository(DBTestBase):
         content = self._create_content_fixture()
         read_content = ContentRepository.get(content.id)
         assert read_content == content
+
+    def test_delete(self):
+        content = self._create_content_fixture()
+        ContentRepository.delete(content.id)
+        with pytest.raises(RepositoryNotFoundError):
+            ContentRepository.get(content.id)

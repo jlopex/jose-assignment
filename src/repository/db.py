@@ -60,3 +60,9 @@ def generic_list(model_instance: _T, domain_class: Type[_Q], **kwargs) -> list[_
     with new_session() as session:
         models = session.query(model_instance).filter_by(**kwargs).all()
         return [domain_class.from_orm(model) for model in models]
+
+
+def generic_delete(model_instance: _T, **kwargs):
+    with new_session() as session:
+        session.query(model_instance).filter_by(**kwargs).delete()
+        session.commit()
