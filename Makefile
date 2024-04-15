@@ -1,5 +1,5 @@
 test:
-	pytest tests --disable-warnings  --verbosity=1
+	pytest tests --disable-warnings  --verbosity=1 --color=yes
 
 install:
 	pip install -Ur requirements.txt
