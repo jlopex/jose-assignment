@@ -27,3 +27,12 @@ async def list_device_systems(name: str | None = None):
 )
 async def create_device_system(device: DeviceCreateSchema):
     return DeviceResponse.from_entity(DeviceRepository.create(device))
+
+
+@app.delete(
+    "/api/devices/{id}",
+    status_code=HTTPStatus.ACCEPTED,
+)
+async def delete_device(id: int):
+    DeviceRepository.delete(id)
+    return {}
