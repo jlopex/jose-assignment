@@ -19,14 +19,14 @@ class TestContentApi(DBTestBase):
     def setup_class(self):
         self.client = TestClient(app)
 
-    def test_get_content(self):
+    def test_get_delivered_content(self):
         device = DeviceFactory.new()
         payload = b"fake payload"
         content = ContentFactory.new(
             encrypted_payload=payload, protection_system=device.protection_system
         )
         response = self.client.get(
-            f"/api/contents/{content.id}", params={"device_id": 1}
+            f"/api/stream/contents/{content.id}", params={"device_id": 1}
         )
 
         assert response.status_code == 200
@@ -80,3 +80,18 @@ class TestContentApi(DBTestBase):
         decrypted_content = CryptoService.decrypt(updated_content)
 
         assert decrypted_content.encrypted_payload == b"NEW TEST PAYLOAD"
+
+    def test_get_content(self):
+        device = DeviceFactory.new()
+        payload = b"fake payload"
+        content = ContentFactory.new(
+            encrypted_payload=payload, protection_system=device.protection_system
+        )
+        response = self.client.get(f"/api/contents/{content.id}")
+
+        assert response.status_code == 200
+        assert response.json() == {
+            "payload": "fake payload",
+            "protectionSystem": "fake protection system",
+            "symmetricKey": "dummy key",
+        }

@@ -16,9 +16,8 @@ ROUTE = f"{BASE_ROUTE}/contents"
 
 
 @app.get("/api/contents/{id}", response_model=ContentResponse)
-async def get_content(id: int, device_id: int):
+async def get_content(id: int):
     content = ContentRepository.get(id)
-    SecurityService.check_can_decrypt(device_id=device_id, content_id=id)
     decoded_payload = CryptoService.decrypt(content=content).encrypted_payload
 
     return ContentResponse(
@@ -105,3 +104,16 @@ async def update_content(id: int, updated_content: ContentCreateSchema):
         "id": id,
         "size": len(crypted_content.encrypted_payload),
     }
+
+
+@app.get("/api/stream/contents/{id}", response_model=ContentResponse)
+async def get_content(id: int, device_id: int):
+    content = ContentRepository.get(id)
+    SecurityService.check_can_decrypt(device_id=device_id, content_id=id)
+    decoded_payload = CryptoService.decrypt(content=content).encrypted_payload
+
+    return ContentResponse(
+        payload=decoded_payload,
+        symmetricKey=content.encryption_key,
+        protectionSystem=content.protection_system.name,
+    )
