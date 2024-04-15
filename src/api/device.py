@@ -13,6 +13,8 @@ async def get_device_system(id: int):
     return DeviceResponse.from_entity(DeviceRepository.get(id))
 
 
-@app.post("/api/devices/", status_code=HTTPStatus.CREATED)
+@app.post(
+    "/api/devices/", status_code=HTTPStatus.CREATED, response_model=DeviceResponse
+)
 async def create_device_system(device: DeviceCreateSchema):
     return DeviceResponse.from_entity(DeviceRepository.create(device))
