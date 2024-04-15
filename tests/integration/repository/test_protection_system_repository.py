@@ -25,3 +25,42 @@ class TestProtectionSystemRepository(DBTestBase):
         protection_system_get = ProtectionSystemRepository.get(protection_system.id)
 
         assert protection_system_get == protection_system
+
+    def test_filter(self):
+        protection_systems = [
+            ProtectionSystemRepository.create(
+                ProtectionSystemBase(
+                    name="PS1",
+                    encryption_mode="test_protection_system 1",
+                )
+            ),
+            ProtectionSystemRepository.create(
+                ProtectionSystemBase(
+                    name="PS2",
+                    encryption_mode="test_protection_system 2",
+                )
+            ),
+        ]
+
+        retrieved_protection_systems = ProtectionSystemRepository.find()
+        assert retrieved_protection_systems == protection_systems  # potential flakiness
+
+    def test_filter_by_name(self):
+        protection_systems = [
+            ProtectionSystemRepository.create(
+                ProtectionSystemBase(
+                    name="PS1",
+                    encryption_mode="test_protection_system 1",
+                )
+            ),
+            ProtectionSystemRepository.create(
+                ProtectionSystemBase(
+                    name="PS2",
+                    encryption_mode="test_protection_system 2",
+                )
+            ),
+        ]
+
+        retrieved_protection_systems = ProtectionSystemRepository.find(name="PS1")
+        assert retrieved_protection_systems == [protection_systems[0]]
+        assert ProtectionSystemRepository.find(name="PS3") == []

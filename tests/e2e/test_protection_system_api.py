@@ -37,3 +37,23 @@ class TestProtectionSystemApi(DBTestBase):
 
         protection_system = ProtectionSystemRepository.get(id=response.json()["id"])
         assert response.json() == protection_system.model_dump()
+
+    def test_list_all_protection_systems(self):
+        protection_systems = [
+            ProtectionSystemFactory.new(name="PS1"),
+            ProtectionSystemFactory.new(name="PS2"),
+        ]
+
+        response = self.client.get("/api/protection-systems/")
+        assert response.json() == [
+            ps.model_dump() for ps in protection_systems
+        ]  # potential flakiness
+
+    def test_filter_protection_systems_by_name(self):
+        protection_systems = [
+            ProtectionSystemFactory.new(name="PS1"),
+            ProtectionSystemFactory.new(name="PS2"),
+        ]
+
+        response = self.client.get("/api/protection-systems/", params={"name": "PS1"})
+        assert response.json() == [protection_systems[0].model_dump()]
