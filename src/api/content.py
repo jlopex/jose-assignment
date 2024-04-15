@@ -3,14 +3,14 @@ from http import HTTPStatus
 from starlette import status
 from starlette.responses import JSONResponse
 
+from src.domain.content import ContentCreate
 from src.repository.content import ContentRepository
+from src.repository.protection_system import ProtectionSystemRepository
 from src.service.crypto import CryptoService
 from src.service.security import SecurityService
 from ._base import app, BASE_ROUTE
 from .responses.content import ContentCreateResponse, ContentResponse
 from .schemas.content_create import ContentCreateSchema
-from ..domain.content import ContentCreate
-from ..repository.protection_system import ProtectionSystemRepository
 
 ROUTE = f"{BASE_ROUTE}/content"
 
