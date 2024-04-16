@@ -46,10 +46,56 @@ does not use DB migrations (Alembic). Once run, browse http://localhost:8000/doc
 ### Populating the DB
 It's possible to seed the DB with initial values with `make populate-db`.
 
+### Implementation
+
+The following endpoints have been implemented:
+
+#### Content
+
+* GET /api/contents/{id}  # Get Content
+* DELETE /api/contents/{id}  # Delete a Content
+* PUT /api/contents/{id}  # Update a Content
+* POST /api/contents/  # Add Content
+* GET /api/stream/contents/{id}  # Get Content
+
+#### Device
+
+* GET /api/devices/{id}   # Get Device Info
+* DELETE /api/devices/{id}   # Delete a Device
+* GET /api/devices/   # List Device Systems
+* POST /api/devices/   # Create Device System
+
+#### Protection Systems
+
+* GET /api/protection-systems/{id}   # Get Protection System
+* GET /api/protection-systems/   # List Protection Systems
+* POST /api/protection-systems/   #Create Protection System
+
+
+### Future Improvements
+
+Some potential improvements could be:
+
+* Add DELETE method for protection-systems (will require to enable CASCADE DELETION in the Device and Content ORM models.
+* Add UNIQUE Constraint to the DB ORM Models to avoid inserting protection systems or devices with repeated names.
+* Add user auth and validation.
+* Dockerize this app and use PostGreSQL or MySQL instead of SQlite
+* Add real migrations with Alembic
+* Research the usage of Async SQLAlchemy
+* Code linting: add ruff (or flake8 + black) and isort to de CI pipeline
+
 
 ## Testing
-Runing tests requires installing dev dependencies first. Install them with `make install-dev`.
+Running tests requires installing dev dependencies first. Install them with `make install-dev`.
+Tests include some examples of Unit, Integration and End to End cases in their respective folders.
+
 Run the tests with `make test`
+
+### Test CI
+There is a little Pipeline for testing PR using GitHub actions.
+See [here](https://github.com/jlopex/jose-assignment/blob/cd533b077dd8d83d2779f0e1a2629cd48c677a94/.github/workflows/test_ci.yml)
+
+There is NO CD (Deployment) for this app.
 
 ## Considerations and Technical decisions
 For simplicity's sake, no real AES cryptography module has been used. Instead two simple routines of my
