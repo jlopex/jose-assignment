@@ -15,3 +15,7 @@ install-dev: install  # Installs development dependencies
 
 run:  # Runs the server. Browse on http://localhost:8000/docs
 	uvicorn src.main:app --reload
+
+migration:  # Execute DB Migrations
+	# Currently we won't use alembic. Just DB initialization
+	python -m src.main
