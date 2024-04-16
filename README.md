@@ -17,6 +17,13 @@ The project uses a DDD approach separating the domain (entities) from the infras
 
  * Domain (in domain/ folder), contains the 3 domain entities (Content, Device, ProtectionSystem), <br />
 along with several other models used for DB Insertion.
+ * Uses a Relational DB database
+ * There is a Cryptographical Service (dummy one of my own) which encrypts / decrypts the payloads.
+
+This `CryptoService` can be set as a presentation layer between the DB and the API.
+
+The global architecture is that of a monolith. If the architecture were to be scaled, consider splitting the 
+monolith (Microservices, Serverless -Lamddas-, or Structured Monolith).
 
 
 ## Tech stack
