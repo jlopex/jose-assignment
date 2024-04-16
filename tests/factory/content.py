@@ -18,14 +18,15 @@ class ContentFactory:
 
         if protection_system_id is None:
             protection_system_id = protection_system.id
+        elif protection_system:
+            assert (
+                protection_system.id == protection_system_id
+            ), "Invalid Fixture initialization"
 
-        assert (
-            protection_system.id == protection_system_id
-        ), "Invalid Fixture initialization"
         content_create = ContentCreate(
             encryption_key=encryption_key,
             encrypted_payload=encrypted_payload,
-            protection_system_id=protection_system.id,
+            protection_system_id=protection_system_id,
         )
         encrypted_content = CryptoService.encrypt(content_create)
         return ContentRepository.create(encrypted_content)

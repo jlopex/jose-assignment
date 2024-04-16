@@ -1,4 +1,4 @@
-from src.api._base import UnicornException
+from src.common.unicorn_exception import UnicornException
 
 
 class RepositoryException(UnicornException):
@@ -10,5 +10,4 @@ class RepositoryNotFoundError(RepositoryException):
 
 
 class RepositoryUnencryptedContentError(RepositoryException):
-    """ Content MUST be encrypted before being stored.
-    """
+    """Content MUST be encrypted before being stored."""

@@ -19,3 +19,6 @@ run:  # Runs the server. Browse on http://localhost:8000/docs
 migration:  # Execute DB Migrations
 	# Currently we won't use alembic. Just DB initialization
 	python -m src.main
+
+populate-db:  # Populate the DB with initial values (does migration)
+	PYTHONPATH=. python src/tools/seed_db.py

@@ -6,11 +6,7 @@ from starlette.responses import JSONResponse
 
 __all__ = ("app", "BASE_ROUTE")
 
-
-class UnicornException(Exception):
-    def __init__(self, name: str):
-        self.name = name
-
+from src.common.unicorn_exception import UnicornException
 
 app: Final[FastAPI] = FastAPI()
 BASE_ROUTE: Final[str] = (
