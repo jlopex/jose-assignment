@@ -1,8 +1,9 @@
+from src.common.unicorn_exception import UnicornException
 from src.repository.content import ContentRepository
 from src.repository.device import DeviceRepository
 
 
-class SecurityError(Exception):
+class SecurityError(UnicornException):
     pass
 
 
